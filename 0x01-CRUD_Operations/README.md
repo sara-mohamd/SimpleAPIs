@@ -9,3 +9,6 @@
 ##### POST /items: Creates a new item.
 ##### PUT /items/<id>: Updates an existing item by ID.
 ##### DELETE /items/<id>: Deletes an item by ID.
+
+## Prerequisite
++ [x] [Introduction to HTTP Basics](https://www3.ntu.edu.sg/home/ehchua/programming/webprogramming/HTTP_Basics.html)
