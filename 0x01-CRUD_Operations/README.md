@@ -13,6 +13,6 @@
 ## Prerequisite
 + [x] [Introduction to HTTP Basics](https://www3.ntu.edu.sg/home/ehchua/programming/webprogramming/HTTP_Basics.html)
 
-# Resources
-+ [x] [Designing a RESTful API with Python and Flask] (https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask)
-+ [x] [REST API Tutorial] (https://mindmajix.com/rest-api-tutorial#principles-rest-api)
+## Resources
++ [x] [Designing a RESTful API with Python and Flask](https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask)
++ [x] [REST API Tutorial](https://mindmajix.com/rest-api-tutorial#principles-rest-api)
