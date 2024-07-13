@@ -93,6 +93,18 @@ def delete_emp(id):
         return f"Exception: {e}"
 
 
+# Make deduction.
+@app.route('/employee/<float:salary>', methods=['PUT'])
+def deduction(salary):
+    try:
+        with get_connection() as conn, conn.cursor() as cursor:
+            sql = f'UPDATE Employees SET Salary = (Salary * 0.9) WHERE Salary > {salary}'
+            cursor.execute(sql)
+            conn.commit()
+        return 'Deduction completed.'
+    except Exception as e:
+        return f"Exception: {e}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
