@@ -69,8 +69,8 @@ def inset_emp():
     except Exception as e:
         return f"Exception: {e}"
 
-@app.route('/item/<int:id>', methods=['PUT'])
-def update_emp():
+@app.route('/employee/<int:id>', methods=['PUT'])
+def update_emp(id):
     try:
         with get_connection() as conn, conn.cursor() as cursor:
             sql = f'UPDATE Employees SET Salary = {request.json['salary']} WHERE id = {id}'
@@ -81,7 +81,7 @@ def update_emp():
         return f"Exception: {e}"
 
 
-@app.route('/item/<int:id>', methods=['DELETE'])
+@app.route('/employee/<int:id>', methods=['DELETE'])
 def delete_emp(id):
     try:
         with get_connection() as conn, conn.cursor() as cursor:
