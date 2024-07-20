@@ -58,12 +58,25 @@ def insert_emp():
 
 
 @app.route('/employee/<int:id>', methods=['PUT'])
-def update_emp():
-    ...
+def update_emp(id):
+    if not request.json or not request.json['salary']:
+        abort(400)
+    emp = Employee.query.get(id)
+    if emp is None:
+        abort(404)
+    emp.salary = request.json['salary']
+    db.session.commit()
+    return jsonify(emp.to_dict())
 
 @app.route('/employee/<int:id>', methods=['DELETE'])
 def delete_emp(id):
-    ...
+    emp = Employee.query.get(id)
+    if emp is None:
+        abort(404, description='Employee not found')
+    db.session.delete(emp)
+    db.session.commit()
+
+    return jsonify('Employee was removed')
 
 if __name__ == '__main__':
   app.run(debug=True)
