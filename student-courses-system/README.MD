@@ -3,15 +3,16 @@
 This project is a simple API built with Flask to manage students and courses. It provides endpoints to retrieve student data and add new students to the database.
 
 ## Project Structure
+```plaintext
 student-courses-system/
 ├── apps/
-│ ├── init.py
-│ ├── database.py
-│ ├── models.py
-│ └── routes/
-│ ├── student.py
-│ ├── course.py
-│ └── student_course.py
+│   ├── __init__.py
+│   ├── database.py
+│   ├── models.py
+│   └── routes/
+│       ├── student.py
+│       ├── course.py
+│       └── student_course.py
 ├── config.py
 ├── run.py
 └── README.md
