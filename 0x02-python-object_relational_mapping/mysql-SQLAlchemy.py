@@ -19,18 +19,18 @@ class Employee(db.Model):
 
     # Constructor
     def __init__(self, name='', gender='', salary=''):
-          self.name = name
-          self.salary = salary
-          self.gender = gender
+            self.name = name
+            self.salary = salary
+            self.gender = gender
 
 
     def to_dict(self):
         return {
-              'id': self.id,
-              'name': self.name,
-              'gender': self.gender,
-              'salary': str(self.salary)
-          }
+                'id': self.id,
+                'name': self.name,
+                'gender': self.gender,
+                'salary': str(self.salary)
+            }
 
 @app.route('/employee', methods=['GET'])
 def get_employees():
@@ -79,4 +79,4 @@ def delete_emp(id):
     return jsonify('Employee was removed')
 
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)
