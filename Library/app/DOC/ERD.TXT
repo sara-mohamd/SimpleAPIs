@@ -1,0 +1,33 @@
+# The ERD and DFD provide a visual representation of the data structure and flow within Booking System API
+ 
++-------------+           +-------------+          +--------------+          +-----------+
+|   Author    |           |     Book    |          | BorrowRecord |          |    User    |
++-------------+           +-------------+          +--------------+          +-----------+
+| id (PK)     |<-1-----∞->| id (PK)     |<-1-----∞-| id (PK)      |          | id (PK)    |
+| name        |           | title       |          | book_id (FK) |          | username   |
+| bio         |           | author_id (FK)         | user_id (FK) |<-∞----1->| password   |
+|             |           | published_date         | borrower_name|          | role       |
+|             |           | isbn (UNIQUE)          | borrow_date  |          | token      |
++-------------+           +-------------+          | return_date  |          | request_count|
+                                                    +--------------+          | last_request_time|
+                                                                               +-----------+
+
+
+======= DFD ======
++-------------------------+
+| External User/Client App|
++-------------------------+
+        |        |        |
+        v        v        v
++---------+ +---------+ +---------+
+| Process | | Process | | Process |
+| (CRUD)  | |  (CRUD) | |  (CRUD) |
+|  Book   | | Author  | | Borrow  |
++---------+ +---------+ +---------+
+        |        |        |
+        v        v        v
++---------+ +---------+ +---------+
+|  Data   | |  Data   | |  Data   |
+|  Store  | |  Store  | |  Store  |
+|  Book   | | Author  | | Borrow  |
++---------+ +---------+ +---------+
