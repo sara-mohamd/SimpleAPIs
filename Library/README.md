@@ -1,7 +1,5 @@
 # Library Management API
 
-## شركة تسابق للتدريب والتطوير
-
 ### Simple API Course Project: Library Management API
 
 This project involves creating a Library Management API using Python Flask and MySQL. The API manages books, authors, and borrow records. It includes features like ORM using SQLAlchemy, Swagger documentation for API endpoints, and security measures for authentication, authorization, and rate limiting. API versioning is also implemented to maintain backward compatibility.
