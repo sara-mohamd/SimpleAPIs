@@ -1,6 +1,7 @@
 from app.DB import db
 from datetime import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
+import uuid
 class Author(db.Model):
     """
     Author model.
@@ -62,7 +63,7 @@ class Book(db.Model):
     published_date = db.Column(db.Date)
     isbn = db.Column(db.String(255), unique=True, nullable=False)
     borrow_records = db.relationship('BorrowRecord', backref='book', lazy=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('Author.id'), nullable=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('Author.id'), nullable=False)
 
     def __init__(self, title, published_date, isbn, author_id):
         """
@@ -145,6 +146,7 @@ class BorrowRecord(db.Model):
         }
 
 
+
 class User(db.Model):
     """
     User Model.
@@ -152,7 +154,7 @@ class User(db.Model):
     Attributes:
         id (int): The primary key for the user.
         username (str): The username of the user.
-        password (str): The password of the user.
+        password (str): The hashed password of the user.
         role (str): The role of the user (e.g., admin, user).
         token (str): An authentication token for the user.
         request_count (int): The number of requests made by the user.
@@ -164,30 +166,67 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(50), nullable=False)
-    token = db.Column(db.String(255))
+    role = db.Column(db.String(50), nullable=False, default='user')
+    token = db.Column(db.String(200), unique=True, nullable=True)
     request_count = db.Column(db.Integer, default=0)
-    last_request_time = db.Column(db.DateTime)
-    borrow_records = db.relationship('BorrowRecord', backref='user')
+    last_request_time = db.Column(db.DateTime, default=datetime.utcnow)
+    borrow_records = db.relationship('BorrowRecord', backref='user', lazy='dynamic')
 
-    def __init__(self, username, password, role, token=None, request_count=0, last_request_time=None):
+    def __init__(self, username, password, role='user', token=None, request_count=0, last_request_time=None):
         """
         Initializes a User instance.
 
         Args:
             username (str): The username of the user.
             password (str): The password of the user.
-            role (str): The role of the user (e.g., admin, user).
+            role (str): The role of the user (e.g., admin, user). Defaults to 'user'.
             token (str, optional): An authentication token for the user. Defaults to None.
             request_count (int, optional): The number of requests made by the user. Defaults to 0.
             last_request_time (datetime, optional): The time of the last request made by the user. Defaults to None.
         """
         self.username = username
-        self.password = password
+        self.password = generate_password_hash(password)
         self.role = role
         self.token = token
         self.request_count = request_count
         self.last_request_time = last_request_time
+
+    def set_password(self, password):
+        """
+        Sets the user's password after hashing it.
+
+        Args:
+            password (str): The plain-text password.
+        """
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        """
+        Checks if the provided password matches the stored hashed password.
+
+        Args:
+            password (str): The plain-text password.
+
+        Returns:
+            bool: True if the password matches, False otherwise.
+        """
+        return check_password_hash(self.password, password)
+
+    @staticmethod
+    def generate_token():
+        """
+        Generates a UUID token.
+
+        Returns:
+            str: The generated UUID token.
+        """
+        return str(uuid.uuid4())
+
+    def is_admin(self):
+        """
+        Checks if the user has an admin role.
+        """
+        return self.role.lower() == "admin"
 
     def to_dict(self):
         """
@@ -199,7 +238,6 @@ class User(db.Model):
         return {
             'ID': self.id,
             'Username': self.username,
-            'Password': self.password,
             'Role': self.role,
             'Token': self.token,
             'Request Count': self.request_count,

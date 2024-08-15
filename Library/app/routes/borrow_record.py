@@ -10,6 +10,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError, DataError
 from app.models import BorrowRecord
+from routes import protected_route
 
 borrowBluePrint = Blueprint('borrow_record', __name__, url_prefix='/borrowRecords/')
 

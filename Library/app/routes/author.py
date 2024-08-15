@@ -1,14 +1,15 @@
-from app.DB import db
-from app.models import Author
-from flask import Blueprint, request, jsonify
-
-
 """
 Author's routes
 
 This module provides CRUD operations for the Author model.
 It includes routes to create, retrieve, update, and delete authors.
 """
+
+from app.DB import db
+from app.models import Author
+from flask import Blueprint, request, jsonify
+from routes import protected_route
+
 
 authorBluePrint = Blueprint('authors', __name__, url_prefix='/authors/')
 

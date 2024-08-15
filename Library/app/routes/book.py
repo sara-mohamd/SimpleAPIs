@@ -9,6 +9,8 @@ from app.DB import db
 from flask import Blueprint, request, jsonify
 from app.models import Book, Author
 from sqlalchemy.exc import IntegrityError
+from routes import protected_route
+
 
 """
 sqlalchemy.exc

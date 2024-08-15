@@ -3,6 +3,7 @@ from .DB import db
 from .routes.author import authorBluePrint
 from .routes.book import bookBluePrint
 from .routes.borrow_record import borrowBluePrint
+from .routes.authentcation import authBluePrint
 
 def createApp():
     app = Flask(__name__)
@@ -13,5 +14,7 @@ def createApp():
     app.register_blueprint(authorBluePrint, url_prefix='/authors')
     app.register_blueprint(bookBluePrint, url_prefix='/books')
     app.register_blueprint(borrowBluePrint, url_prefix='/borrowRecords')
+    app.register_blueprint(authBluePrint, url_prefix='/auth')
+
 
     return app
