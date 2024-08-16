@@ -1,0 +1,322 @@
+swagger: "2.0"
+info:
+  description: "This is a simple Library Management API."
+  version: "1.0.0"
+  title: "Library Management API"
+host: "localhost:5000"
+basePath: "/"
+tags:
+  - name: "Authentication"
+    description: "Operations for user authentication."
+  - name: "Authors"
+    description: "Operations related to author management."
+  - name: "Books"
+    description: "Operations related to book management."
+  - name: "Borrow Records"
+    description: "Operations related to borrow record management."
+schemes:
+  - "http"
+paths:
+  /auth/register:
+    post:
+      tags:
+        - "Authentication"
+      summary: "Register a new user"
+      description: "Registers a new user by providing a username, password, and role."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object to be registered"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - username
+              - password
+              - role
+            properties:
+              username:
+                type: "string"
+              password:
+                type: "string"
+              role:
+                type: "string"
+      responses:
+        200:
+          description: "User successfully registered"
+        400:
+          description: "Invalid input data"
+        500:
+          description: "Server error"
+
+  /auth/login:
+    post:
+      tags:
+        - "Authentication"
+      summary: "Login a user"
+      description: "Authenticates a user by validating the provided username and password."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Login credentials"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        200:
+          description: "User successfully logged in"
+        400:
+          description: "Missing username or password"
+        401:
+          description: "Invalid username or password"
+        500:
+          description: "Server error"
+
+  /auth/user-details:
+    get:
+      tags:
+        - "Authentication"
+      summary: "Get user details"
+      description: "Returns details of the authenticated user."
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          description: "Token for authentication"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "User details retrieved successfully"
+        401:
+          description: "Invalid or missing token"
+        500:
+          description: "Server error"
+
+  /authors:
+    post:
+      tags:
+        - "Authors"
+      summary: "Create a new author"
+      description: "Creates a new author entry, accessible only by admin users."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          description: "Token for authentication"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Author object to be created"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - name
+              - bio
+            properties:
+              name:
+                type: "string"
+              bio:
+                type: "string"
+      responses:
+        200:
+          description: "Author created successfully"
+        401:
+          description: "Unauthorized (not admin)"
+        500:
+          description: "Server error"
+
+  /books:
+    post:
+      tags:
+        - "Books"
+      summary: "Create a new book"
+      description: "Creates a new book entry, accessible only by admin users."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          description: "Token for authentication"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Book object to be created"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - title
+              - author_id
+              - published_date
+            properties:
+              title:
+                type: "string"
+              author_id:
+                type: "integer"
+              published_date:
+                type: "string"
+                format: "date"
+      responses:
+        200:
+          description: "Book created successfully"
+        401:
+          description: "Unauthorized (not admin)"
+        500:
+          description: "Server error"
+
+  /borrow_record:
+    post:
+      tags:
+        - "Borrow Records"
+      summary: "Create a new borrow record"
+      description: "Creates a new borrow record including borrow date, book ID, user ID, and optionally a return date."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Borrow record object to be created"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - borrow_date
+              - book_id
+              - user_id
+            properties:
+              borrow_date:
+                type: "string"
+                format: "date"
+                example: "2024-08-16"
+              book_id:
+                type: "integer"
+                example: 1
+              user_id:
+                type: "integer"
+                example: 1
+              return_date:
+                type: "string"
+                format: "date"
+                example: "2024-08-25"
+      responses:
+        201:
+          description: "Borrow record created successfully"
+        400:
+          description: "Bad request, invalid payload or incorrect data format"
+        404:
+          description: "Foreign key references non-existing records"
+        500:
+          description: "Internal server error"
+
+  /borrow_record/{id}:
+    get:
+      tags:
+        - "Borrow Records"
+      summary: "Retrieve a borrow record by ID"
+      description: "Retrieves details of a borrow record by its ID."
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+          description: "ID of the borrow record to retrieve."
+      responses:
+        200:
+          description: "Borrow record retrieved successfully"
+        404:
+          description: "Borrow record not found"
+        500:
+          description: "Internal server error"
+
+    put:
+      tags:
+        - "Borrow Records"
+      summary: "Update a borrow record by ID"
+      description: "Updates an existing borrow record by its ID."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+          description: "ID of the borrow record to update."
+        - in: "body"
+          name: "body"
+          description: "Borrow record object to be updated"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              return_date:
+                type: "string"
+                format: "date"
+                example: "2024-08-25"
+              book_id:
+                type: "integer"
+                example: 1
+              user_id:
+                type: "integer"
+                example: 1
+      responses:
+        200:
+          description: "Borrow record updated successfully"
+        400:
+          description: "Bad request, invalid payload or incorrect data format"
+        404:
+          description: "Borrow record not found"
+        500:
+          description: "Internal server error"
+
+    delete:
+      tags:
+        - "Borrow Records"
+      summary: "Delete a borrow record by ID"
+      description: "Deletes a borrow record by its ID."
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+          description: "ID of the borrow record to delete."
+      responses:
+        200:
+          description: "Borrow record deleted successfully"
+        404:
+          description: "Borrow record not found"
+        500:
+          description: "Internal server error"
