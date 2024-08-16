@@ -9,7 +9,7 @@ from app.DB import db
 from flask import Blueprint, request, jsonify
 from app.models import Book, Author
 from sqlalchemy.exc import IntegrityError
-from routes import protected_route
+from app.routes import protected_routes
 
 
 """
@@ -31,6 +31,7 @@ bookBluePrint = Blueprint('book', __name__, url_prefix='/books')
 
 
 @bookBluePrint.route('/', methods=['POST'])
+@protected_routes
 def insertBook():
     """
     Create a new book.
@@ -94,6 +95,7 @@ def getBook(id):
 
 
 @bookBluePrint.route('/<int:id>', methods=['PUT'])
+@protected_routes
 def updateBook(id):
     """
     Update book information by its ID.
@@ -128,6 +130,7 @@ def updateBook(id):
 
 
 @bookBluePrint.route('/<int:id>', methods=['DELETE'])
+@protected_routes
 def deleteBook(id):
     """
     Delete a book by its ID.

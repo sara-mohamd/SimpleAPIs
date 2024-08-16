@@ -222,12 +222,6 @@ class User(db.Model):
         """
         return str(uuid.uuid4())
 
-    def is_admin(self):
-        """
-        Checks if the user has an admin role.
-        """
-        return self.role.lower() == "admin"
-
     def to_dict(self):
         """
         Converts the User instance to a dictionary.

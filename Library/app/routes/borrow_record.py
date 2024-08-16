@@ -10,12 +10,13 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError, DataError
 from app.models import BorrowRecord
-from routes import protected_route
+from app.routes import protected_routes
 
 borrowBluePrint = Blueprint('borrow_record', __name__, url_prefix='/borrowRecords/')
 
 
 @borrowBluePrint.route('/', methods=['POST'])
+@protected_routes
 def insertBorrowRecord():
     """
     Create a new borrow record.
@@ -86,6 +87,7 @@ def getBorrowRecord(id):
 
 
 @borrowBluePrint.route('/<int:id>', methods=['PUT'])
+@protected_routes
 def updateBorrowRecord(id):
     """
     Update a borrow record by its ID.
@@ -137,6 +139,7 @@ def updateBorrowRecord(id):
 
 
 @borrowBluePrint.route('/<int:id>', methods=['DELETE'])
+@protected_routes
 def deleteBorrowRecord(id):
     """
     Delete a Borrow Record by its ID.

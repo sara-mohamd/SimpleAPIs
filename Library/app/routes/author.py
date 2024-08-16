@@ -8,14 +8,15 @@ It includes routes to create, retrieve, update, and delete authors.
 from app.DB import db
 from app.models import Author
 from flask import Blueprint, request, jsonify
-from routes import protected_route
+from app.routes import protected_routes, is_admin
 
 
 authorBluePrint = Blueprint('authors', __name__, url_prefix='/authors/')
 
 
 @authorBluePrint.route('/', methods=['POST'])
-def insertAuthor():
+@protected_routes
+def insertAuthor(user):
     """
     Create a new author.
 
@@ -35,7 +36,10 @@ def insertAuthor():
         HTTP 400: If the request payload is invalid.
         HTTP 500: If there is a server error.
     """
+    if not is_admin(user):
+        return jsonify({"Message": "Admin privileges required!"}), 403
     if not request.json or 'name' not in request.json:
+
         return jsonify({'error': 'Bad request'}), 400
 
     data = request.get_json()
@@ -76,6 +80,7 @@ def getAuthor(id):
 
 
 @authorBluePrint.route('/<int:id>', methods=['PUT'])
+@protected_routes
 def updateEmp(id):
     """
     Update an author's biography.
@@ -114,6 +119,7 @@ def updateEmp(id):
 
 
 @authorBluePrint.route('/<int:id>', methods=['DELETE'])
+@protected_routes
 def deleteAuthor(id):
     """
     Delete an author.
