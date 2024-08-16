@@ -6,9 +6,9 @@ authBluePrint = Blueprint("auth", __name__)
 
 @authBluePrint.route('/register', methods=['POST'])
 def register():
-    
+    # under develop.
     try:
-        data = request.get_json()
+        ...
     except Exception as e:
         ...
 
